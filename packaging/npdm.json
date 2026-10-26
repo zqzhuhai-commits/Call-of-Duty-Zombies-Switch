@@ -1,8 +1,8 @@
 {
   "name": "NZP-ZH",
-  "title_id": "0x05004E5A505A4800",
-  "title_id_range_min": "0x05004E5A505A4800",
-  "title_id_range_max": "0x05004E5A505A4800",
+  "title_id": "0x05004E5A505A4000",
+  "title_id_range_min": "0x05004E5A505A4000",
+  "title_id_range_max": "0x05004E5A505A4000",
   "main_thread_stack_size": "0x200000",
   "main_thread_priority": 44,
   "default_cpu_id": 0,
