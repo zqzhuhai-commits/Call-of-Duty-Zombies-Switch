@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Switch audio dependencies
-        run: dkp-pacman -Syu --noconfirm && dkp-pacman -S --needed --noconfirm switch-sdl2_mixer
+        run: dkp-pacman -Q switch-sdl2_mixer || dkp-pacman -Sy --needed --noconfirm switch-sdl2_mixer
       - name: Prepare pinned engine and resources
         run: python3 tools/prepare.py
       - name: Check Chinese text decoding and glyph coverage
