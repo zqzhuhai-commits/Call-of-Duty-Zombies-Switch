@@ -14,6 +14,7 @@ if subprocess.check_output(['git','status','--porcelain'],cwd=engine).strip():
 subprocess.run(['git','checkout','--detach',ENGINE_SHA],cwd=engine,check=True)
 subprocess.run(['git','apply',str(ROOT/'patches/0001-zh-romfs.patch')],cwd=engine,check=True)
 shutil.copytree(ROOT/'overlay/source',engine/'source',dirs_exist_ok=True)
+shutil.copy(ROOT/'art/cod-zombies-icon-256.jpg',engine/'source/platform/nx/art/icon.jpg')
 romfs=engine/'romfs';(romfs/'nzp/gfx').mkdir(parents=True,exist_ok=True)
 if not a.skip_assets:
  archive=a.assets_zip or ROOT/'downloads/nzportable-switch.zip'

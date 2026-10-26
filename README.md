@@ -52,3 +52,14 @@ Title ID：`05004E5A505A4800`，配置与普通 NRO 分开保存在 `switch/nzp-
 最终打包工具采用 hacBrewPack，需要私下提供 `header_key` 和对应的 `key_area_key_application_xx`。
 准备好本地工具和密钥文件后运行 `bash tools/pack-nsp.sh /absolute/path/to/prod.keys`。
 仓库与自动构建不保存密钥。应用配置仍需实机验证，打包成功不等于已可正常游玩。
+
+## 0.1.1 图标与作者更新
+
+应用显示名：使命召唤：僵尸；作者：Xiao Fan。使用 art/cod-zombies-icon-256.jpg 的新方形图标。
+已重新生成 NSP，Title ID 保持 05004E5A505A4800。安装包的程序、控制与元数据校验通过；Switch 实机启动仍未验证。
+
+## 0.1.2 加载方块排查
+
+旧包存在渐进式 JPEG 和语言标记/图标文件不匹配的问题。修正版改为标准 JPEG，并补齐16种语言的图标与支持标记。详见 docs/ICON-FIX-0.1.2.md。
+使用 hacBrewPack 打包前应用 packaging/hacbrewpack-v012.patch，提高安装元数据版本号。
+这些修正已通过包结构与引用检查，是否解决实机加载方块仍需用户验证。
