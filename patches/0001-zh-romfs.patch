@@ -1,5 +1,5 @@
 diff --git a/Makefile.nx b/Makefile.nx
-index 89e420d..4245e5b 100644
+index 89e420d..b3e3006 100644
 --- a/Makefile.nx
 +++ b/Makefile.nx
 @@ -9,9 +9,9 @@ endif
@@ -11,7 +11,7 @@ index 89e420d..4245e5b 100644
 -APP_VERSION	:=	2.0.0-indev
 +APP_TITLE	:=	使命召唤：纳粹僵尸
 +APP_AUTHOR	:=	Xiao Fan
-+APP_VERSION	:=	0.1.5-zh
++APP_VERSION	:=	0.1.6-zh
  ICON        :=  source/platform/nx/art/icon.jpg
  
  TARGET		:=	nzportable
@@ -111,7 +111,7 @@ index e39190e..abe0360 100644
  	COM_DefaultExtension (name, ".sav");
  
 diff --git a/source/menu/menu_helper.c b/source/menu/menu_helper.c
-index 89390ca..f0ab8cc 100644
+index 89390ca..e14acfb 100644
 --- a/source/menu/menu_helper.c
 +++ b/source/menu/menu_helper.c
 @@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -122,6 +122,15 @@ index 89390ca..f0ab8cc 100644
  
  qboolean		menu_is_solo;
  
+@@ -663,7 +664,7 @@ void Menu_DrawMapButton (int order, int button_index, int usermap_index, int map
+ 	int index = 0;
+ 	char *button_name;
+ 	char *final_name;
+-	int desc_y_factor = 10*vid.scale;
++	int desc_y_factor = 12*vid.scale;
+ 
+ 	int image_width = (vid.width/3);
+ 	int image_height = (vid.height/3);
 @@ -939,7 +940,7 @@ Menu_DrawBuildDate
  */
  void Menu_DrawBuildDate (void)

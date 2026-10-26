@@ -12,6 +12,8 @@ for n,line in enumerate((root/'localization/zh_CN.tsv').read_text().splitlines()
     if en in entries: raise ValueError(f'duplicate entry: {n}: {en}')
     entries[en]=zh
 text=''.join(entries.values())+(root/'engine/source/menu/menu_loadscreen_tips.h').read_text()
+for metadata in (root/'overlay/romfs/nzp/maps').glob('*.txt'):
+    text+=''.join(metadata.read_text().splitlines()[:9])
 cps=sorted({ord(c) for c in text if ord(c)>255})
 cols=28;cell=36;height=1
 while height<math.ceil(len(cps)/cols)*cell: height*=2

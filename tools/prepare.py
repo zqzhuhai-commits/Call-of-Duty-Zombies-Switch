@@ -30,6 +30,8 @@ if not a.skip_assets:
    rel=Path(item.filename[len(prefix):])
    if rel.is_absolute() or '..' in rel.parts:raise ValueError('Unsafe ZIP member')
    dest=romfs/'nzp'/rel;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(z.read(item))
+ # Apply localized display metadata after extracting the pinned assets.
+ shutil.copytree(ROOT/'overlay/romfs/nzp/maps',romfs/'nzp/maps',dirs_exist_ok=True)
  atlas=ROOT/'overlay/romfs/nzp/gfx/charset_zh.tga.gz.b64'
  (romfs/'nzp/gfx/charset_zh.tga').write_bytes(gzip.decompress(base64.b64decode(atlas.read_bytes())))
  (romfs/'nzp/licenses').mkdir(parents=True,exist_ok=True)
