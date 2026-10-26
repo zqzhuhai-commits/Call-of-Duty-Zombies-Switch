@@ -24,3 +24,28 @@ jobs:
           name: NZP-ZH-Switch-build
           path: dist/
           if-no-files-found: error
+
+  release-preview:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: NZP-ZH-Switch-build
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.0-zh-preview
+          name: NZP Chinese Switch preview (hardware testing required)
+          prerelease: true
+          body: |
+            Chinese Switch build with embedded game resources. This is an NRO preview, not the final NSP.
+            Cross-compilation and embedded RomFS checks passed; Switch hardware gameplay has not been verified.
+            Run in full-memory homebrew mode. No separate game resource folder is required.
+            中文首批适配；未完成全部动态提示、角色介绍及贴图文字汉化。实机运行、声音、帧率待测试。
+            Source and licenses are available in this repository and the pinned upstream commits in README.md.
+          files: |
+            dist/NZP-ZH-Standalone.nro
+            dist/SHA256SUMS.txt
