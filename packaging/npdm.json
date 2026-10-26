@@ -86,7 +86,8 @@
         "control_code_memory": 76,
         "map_transfer_memory": 81,
         "unmap_transfer_memory": 82,
-        "get_system_info": 111
+        "get_system_info": 111,
+        "return_from_exception": 40
       }
     },
     {

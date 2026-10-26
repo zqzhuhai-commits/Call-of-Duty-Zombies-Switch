@@ -1,5 +1,5 @@
 diff --git a/Makefile.nx b/Makefile.nx
-index 89e420d..b3e3006 100644
+index 89e420d..529ab2b 100644
 --- a/Makefile.nx
 +++ b/Makefile.nx
 @@ -9,9 +9,9 @@ endif
@@ -11,7 +11,7 @@ index 89e420d..b3e3006 100644
 -APP_VERSION	:=	2.0.0-indev
 +APP_TITLE	:=	使命召唤：纳粹僵尸
 +APP_AUTHOR	:=	Xiao Fan
-+APP_VERSION	:=	0.1.6-zh
++APP_VERSION	:=	0.1.7-zh
  ICON        :=  source/platform/nx/art/icon.jpg
  
  TARGET		:=	nzportable
@@ -310,22 +310,56 @@ index 59f94d1..49709e6 100644
  
  //Diabolickal HLBSP
 diff --git a/source/platform/nx/gl/gl_vidnx.c b/source/platform/nx/gl/gl_vidnx.c
-index 1523df3..08f88be 100644
+index 1523df3..c8b33b8 100644
 --- a/source/platform/nx/gl/gl_vidnx.c
 +++ b/source/platform/nx/gl/gl_vidnx.c
-@@ -45,8 +45,8 @@ static EGLDisplay s_display;
+@@ -45,11 +45,14 @@ static EGLDisplay s_display;
  static EGLContext s_context;
  static EGLSurface s_surface;
  
 -#define NX_SCREEN_WIDTH  1920
 -#define NX_SCREEN_HEIGHT 1080
++extern void NX_BootTrace(const char *stage, unsigned int detail);
++
 +#define NX_SCREEN_WIDTH  1280
 +#define NX_SCREEN_HEIGHT 720
  
  void GL_Init (void)
  {
++	NX_BootTrace("GL_Init entered", 0);
+ 	nwindowSetDimensions(nwindowGetDefault(), NX_SCREEN_WIDTH, NX_SCREEN_HEIGHT);
+  // Connect to the EGL default display
+     s_display = eglGetDisplay(EGL_DEFAULT_DISPLAY);
+@@ -60,7 +63,8 @@ void GL_Init (void)
+     }
+ 
+     // Initialize the EGL display connection
+-    eglInitialize(s_display, NULL, NULL);
++    EGLBoolean initialized = eglInitialize(s_display, NULL, NULL);
++    NX_BootTrace("EGL initialized", initialized);
+ 
+     // Select OpenGL (Core) as the desired graphics API
+     if (eglBindAPI(EGL_OPENGL_API) == EGL_FALSE)
+@@ -110,6 +114,7 @@ void GL_Init (void)
+         EGL_NONE
+     };
+     s_context = eglCreateContext(s_display, config, EGL_NO_CONTEXT, contextAttributeList);
++    NX_BootTrace("EGL context created", s_context != EGL_NO_CONTEXT);
+     if (!s_context)
+     {
+         fprintf(stderr, "Context creation failed! error: %d", eglGetError());
+@@ -122,7 +127,9 @@ void GL_Init (void)
+ 	eglSwapInterval(s_display, 1);
+ 	nwindowSetCrop(nwindowGetDefault(), 0, 0, NX_SCREEN_WIDTH, NX_SCREEN_HEIGHT);
+ 
++    NX_BootTrace("EGL context made current", 0);
+     int version = gladLoadGL(eglGetProcAddress);
++    NX_BootTrace("OpenGL symbols loaded", version);
+ 	if (version == 0) {
+ 		Sys_Error("Failed to initialize OpenGL context\n");
+ 		return;
 diff --git a/source/platform/nx/sys_nx.c b/source/platform/nx/sys_nx.c
-index d70ac38..c5b10d4 100644
+index d70ac38..ea1f11d 100644
 --- a/source/platform/nx/sys_nx.c
 +++ b/source/platform/nx/sys_nx.c
 @@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -336,12 +370,56 @@ index d70ac38..c5b10d4 100644
  qboolean isDedicated;
  PadState pad;
  
-@@ -336,12 +337,26 @@ int main (int argc, char **argv)
+@@ -172,8 +173,10 @@ void Sys_SystemError(char *error)
+     nwindowSetCrop(nwindowGetDefault(), 0, 0,
+         console->consoleWidth * 16, console->consoleHeight * 16);
+     // Errors can occur before the normal input setup has completed.
+-    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
++    NX_BootTrace("main entered", 0);
++	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+     padInitializeDefault(&pad);
++	NX_BootTrace("input initialized", 0);
+     padUpdate(&pad);
+ 
+     do
+@@ -327,38 +330,83 @@ void Sys_CaptureScreenshot(void)
+ 
+ //=============================================================================
+ 
++/* First-stage diagnostics: keep native and NRO evidence in separate files. */
++static const char *NX_BootLogPath(void)
++{
++    return envIsNso() ? "sdmc:/nzp-native-boot.log" : "sdmc:/nzp-nro-boot.log";
++}
++void NX_BootTrace(const char *stage, unsigned int detail)
++{
++    FILE *log = fopen(NX_BootLogPath(), "a");
++    if (!log) return;
++    fprintf(log, "%llu %s: 0x%08x\n", (unsigned long long)svcGetSystemTick(), stage, detail);
++    fclose(log);
++}
++void userAppInit(void)
++{
++    FILE *log = fopen(NX_BootLogPath(), "w");
++    if (log) { fprintf(log, "NZP 0.1.7 %s boot\n", envIsNso() ? "NSO" : "NRO"); fclose(log); }
++    NX_BootTrace("libnx initialized and SD mounted", 0);
++}
++
+ bool game_running;
+ int main (int argc, char **argv)
+ {
+ 	static float time, oldtime;
+ 	static quakeparms_t parms;
+ 
++	NX_BootTrace("main entered", 0);
  	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
  	padInitializeDefault(&pad);
++	NX_BootTrace("input initialized", 0);
  	
 -	chdir("/switch/nzportable/");
++    NX_BootTrace("mounting RomFS", 0);
 +    Result romfs_result = romfsInit();
++    NX_BootTrace("RomFS mount result", romfs_result);
 +    if (R_FAILED(romfs_result)) {
 +        consoleInit(NULL);
 +        printf("NZ:P ZH: cannot mount built-in game data: 0x%08x\n", romfs_result);
@@ -361,11 +439,28 @@ index d70ac38..c5b10d4 100644
  	parms.membase = malloc(parms.memsize);
 -	parms.basedir = "/switch/nzportable/";
 +	parms.basedir = "romfs:/";
++    NX_BootTrace("game heap allocated", parms.membase ? 1 : 0);
 +    if (!parms.membase) Sys_Error("Not enough application memory\n");
  
  	COM_InitArgv (argc, argv);
  
-@@ -360,5 +375,7 @@ int main (int argc, char **argv)
+ 	parms.argc = com_argc;
+ 	parms.argv = com_argv;
+ 
++	NX_BootTrace("Host_Init entered", 0);
+ 	Host_Init (&parms);
++	NX_BootTrace("Host_Init completed", 0);
+ 
+ 	oldtime = Sys_FloatTime();
+ 
+ 	game_running = true;
++    bool first_frame = true;
+ 	while (appletMainLoop() && game_running)
+ 	{
+ 		time = Sys_FloatTime();
++		if (first_frame) NX_BootTrace("first frame entered", 0);
+ 		Host_Frame (time - oldtime);
++        if (first_frame) { NX_BootTrace("first frame completed", 0); first_frame = false; }
  		music_update();
  		oldtime = time;
  	}
