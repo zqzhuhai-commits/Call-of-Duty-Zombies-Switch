@@ -359,10 +359,18 @@ index 1523df3..c8b33b8 100644
  		Sys_Error("Failed to initialize OpenGL context\n");
  		return;
 diff --git a/source/platform/nx/sys_nx.c b/source/platform/nx/sys_nx.c
-index d70ac38..ea1f11d 100644
+index d70ac38..fba107c 100644
 --- a/source/platform/nx/sys_nx.c
 +++ b/source/platform/nx/sys_nx.c
-@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+@@ -27,12 +27,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
++void NX_BootTrace(const char *stage, unsigned int detail);
++
+ //#define TICKS_PER_SEC 268123480.0
+ 
+ // this is more than enough for the hunk
  #define QUAKE_HUNK_MB	128
  
  
@@ -370,19 +378,17 @@ index d70ac38..ea1f11d 100644
  qboolean isDedicated;
  PadState pad;
  
-@@ -172,8 +173,10 @@ void Sys_SystemError(char *error)
+@@ -172,7 +175,8 @@ void Sys_SystemError(char *error)
      nwindowSetCrop(nwindowGetDefault(), 0, 0,
          console->consoleWidth * 16, console->consoleHeight * 16);
      // Errors can occur before the normal input setup has completed.
 -    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-+    NX_BootTrace("main entered", 0);
++    NX_BootTrace("fatal error entered", 0);
 +	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
      padInitializeDefault(&pad);
-+	NX_BootTrace("input initialized", 0);
      padUpdate(&pad);
  
-     do
-@@ -327,38 +330,83 @@ void Sys_CaptureScreenshot(void)
+@@ -327,38 +331,83 @@ void Sys_CaptureScreenshot(void)
  
  //=============================================================================
  
