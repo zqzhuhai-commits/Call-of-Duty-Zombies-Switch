@@ -19,7 +19,8 @@ jobs:
       - name: Capture actual menu and map renders
         run: xvfb-run -a -s '-screen 0 1280x720x24' python3 tools/capture-desktop.py
       - name: Verify full-resolution Chinese font upload
-        run: grep -F "Chinese UI atlas: 1024x1024 -> 1024x1024" screenshots/desktop-menu.log
+        run: |
+          grep -F "Chinese UI atlas: 1024x1024 -> 1024x1024" screenshots/desktop-menu.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
