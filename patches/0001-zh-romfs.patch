@@ -9,7 +9,7 @@ index 89e420d..b9683e8 100644
 -APP_TITLE	:=	Nazi Zombies Portable
 -APP_AUTHOR	:=	NZP Team
 -APP_VERSION	:=	2.0.0-indev
-+APP_TITLE	:=	使命召唤：僵尸
++APP_TITLE	:=	使命召唤：纳粹僵尸
 +APP_AUTHOR	:=	Xiao Fan
 +APP_VERSION	:=	0.1.3-zh
  ICON        :=  source/platform/nx/art/icon.jpg
