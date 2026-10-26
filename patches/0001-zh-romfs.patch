@@ -1,5 +1,5 @@
 diff --git a/Makefile.nx b/Makefile.nx
-index 89e420d..edb1800 100644
+index 89e420d..4245e5b 100644
 --- a/Makefile.nx
 +++ b/Makefile.nx
 @@ -9,9 +9,9 @@ endif
@@ -11,7 +11,7 @@ index 89e420d..edb1800 100644
 -APP_VERSION	:=	2.0.0-indev
 +APP_TITLE	:=	使命召唤：纳粹僵尸
 +APP_AUTHOR	:=	Xiao Fan
-+APP_VERSION	:=	0.1.4-zh
++APP_VERSION	:=	0.1.5-zh
  ICON        :=  source/platform/nx/art/icon.jpg
  
  TARGET		:=	nzportable
@@ -287,6 +287,21 @@ index 59f94d1..49709e6 100644
  }
  
  //Diabolickal HLBSP
+diff --git a/source/platform/nx/gl/gl_vidnx.c b/source/platform/nx/gl/gl_vidnx.c
+index 1523df3..08f88be 100644
+--- a/source/platform/nx/gl/gl_vidnx.c
++++ b/source/platform/nx/gl/gl_vidnx.c
+@@ -45,8 +45,8 @@ static EGLDisplay s_display;
+ static EGLContext s_context;
+ static EGLSurface s_surface;
+ 
+-#define NX_SCREEN_WIDTH  1920
+-#define NX_SCREEN_HEIGHT 1080
++#define NX_SCREEN_WIDTH  1280
++#define NX_SCREEN_HEIGHT 720
+ 
+ void GL_Init (void)
+ {
 diff --git a/source/platform/nx/sys_nx.c b/source/platform/nx/sys_nx.c
 index d70ac38..c5b10d4 100644
 --- a/source/platform/nx/sys_nx.c
@@ -337,7 +352,7 @@ index d70ac38..c5b10d4 100644
  	return 0;
  }
 diff --git a/source/render/r_draw.c b/source/render/r_draw.c
-index e4f1024..19359c5 100644
+index e4f1024..7aeadc7 100644
 --- a/source/render/r_draw.c
 +++ b/source/render/r_draw.c
 @@ -19,6 +19,8 @@
@@ -380,10 +395,10 @@ index e4f1024..19359c5 100644
 +                float u = (glyph % ZH_ATLAS_COLUMNS) * (float)ZH_GLYPH_CELL / ZH_ATLAS_WIDTH;
 +                float v = (glyph / ZH_ATLAS_COLUMNS) * (float)ZH_GLYPH_CELL / ZH_ATLAS_HEIGHT;
 +                Draw_QueueQuad(zh_texture, HYE_2D_TEXTURED | HYE_2D_BLEND,
-+                    x, y-1*scale_int, x+ZH_GLYPH_CELL*scale_int, y+(ZH_GLYPH_CELL-1)*scale_int,
++                    x, y-1*scale_int, x+ZH_GLYPH_ADVANCE*scale_int, y+(ZH_GLYPH_ADVANCE-1)*scale_int,
 +                    u, v, u+(float)ZH_GLYPH_CELL/ZH_ATLAS_WIDTH, v+(float)ZH_GLYPH_CELL/ZH_ATLAS_HEIGHT, r,g,b,a);
 +            } else Draw_CharacterRGBA(x,y,'?',r,g,b,a,scale_int);
-+            x += ZH_GLYPH_CELL * scale_int;
++            x += ZH_GLYPH_ADVANCE * scale_int;
 +        } else {
 +            Draw_CharacterRGBA(x,y,cp,r,g,b,a,scale_int);
 +            if (cp == ' ') x += 4*scale_int;
@@ -393,7 +408,15 @@ index e4f1024..19359c5 100644
      }
  }
  
-@@ -258,14 +272,13 @@ getTextWidth(char * str, float scale)
+@@ -251,21 +265,20 @@ int
+ getTextWidth(char * str, float scale)
+ {
+     int width     = 0;
+-    int scale_int = (int) scale;
++    int scale_int = (int) rintf(scale);
+ 
+     if (!str)
+         return 0;
  
      if (scale_int < 1)
          scale_int = 1;
@@ -408,10 +431,95 @@ index e4f1024..19359c5 100644
 +    const char *cursor = ZH_Translate(str);
 +    while (*cursor) {
 +        unsigned int cp = ZH_Decode(&cursor);
-+        if (cp > 255) width += ZH_GLYPH_CELL*scale_int;
++        if (cp > 255) width += ZH_GLYPH_ADVANCE*scale_int;
 +        else if (cp == ' ') width += 4*scale_int;
 +        else if (cp < 33 || cp > 126) width += 8*scale_int;
 +        else width += (font_kerningamount[cp-33]+1)*scale_int;
      }
      return width;
  }
+diff --git a/source/render/r_hud.c b/source/render/r_hud.c
+index 0276f84..a97764d 100644
+--- a/source/render/r_hud.c
++++ b/source/render/r_hud.c
+@@ -21,6 +21,7 @@
+ 
+ #include "../nzportable_def.h"
+ #include "../menu/menu_defs.h"
++#include "../zh_text.h"
+ 
+ #ifdef PSP_VFPU
+ #include <pspmath.h>
+@@ -545,9 +546,9 @@ HUD_UsePrint(int index, int cost)
+     button      = HUD_KeyHasIcon(hud_use_key) ? "  " : HUD_UseKeyLabel(hud_use_key);
+ 
+     hud_usecost[0] = 0;
+-    HUD_ExpandUsePrint(hud_useprint_strings[index], button, touch);
++    HUD_ExpandUsePrint(ZH_Translate(hud_useprint_strings[index]), button, ZH_Translate(touch));
+     if (cost > 0)
+-        snprintf(hud_usecost, sizeof(hud_usecost), "[Cost: %i]", cost);
++        snprintf(hud_usecost, sizeof(hud_usecost), ZH_Translate("[Cost: %i]"), cost);
+     hud_use_type    = index;
+     hud_use_until   = Sys_FloatTime() + 0.1;
+     scr_usetime_off = 0.1f;
+@@ -1008,7 +1009,7 @@ HUD_EndScreen(void)
+     int row_height    = 11 * vid.scale;
+     float text_scale  = vid.scale;
+     static const char * full_headers[]      = { "Score", "Kills", "Downs", "Revives", "Headshots" };
+-    static const char * condensed_headers[] = { "PTS", "K", "D", "R", "HS" };
++    static const char * condensed_headers[] = { "Score", "Kills", "Downs", "Revives", "Headshots" };
+     static const float condensed_offsets[]  = { -44.0f, 2.0f, 42.0f, 82.0f, 123.0f };
+     static const float condensed_widths[]   = { 52.0f, 40.0f, 40.0f, 40.0f, 42.0f };
+     static const float full_offsets[]       = { -87.0f, -31.0f, 25.0f, 81.0f, 137.0f };
+@@ -1027,8 +1028,7 @@ HUD_EndScreen(void)
+     if (!showscoreboard) {
+         HUD_DrawTextBackdrop((vid.width - getTextWidth("GAME OVER", 2 * vid.scale)) / 2,
+           50 * vid.scale, "GAME OVER", 255, 255, 255, 255, 2 * vid.scale);
+-        snprintf(text, sizeof(text), "You Survived %i Round%s", cl.stats[STAT_ROUNDS],
+-          cl.stats[STAT_ROUNDS] == 1 ? "" : "s");
++        snprintf(text, sizeof(text), ZH_Translate("You Survived %i Rounds"), cl.stats[STAT_ROUNDS]);
+         HUD_DrawTextBackdrop((vid.width - getTextWidth(text, 1.5f * vid.scale)) / 2,
+           68 * vid.scale, text, 255, 255, 255, 255, 1.5f * vid.scale);
+     }
+@@ -2179,7 +2179,7 @@ HUD_BettyPrompt(void)
+     char str2[32];
+     int x;
+ 
+-    Q_strncpyz(str, va("Double-tap  %s  then press  %s", GetUseButtonL(), GetGrenadeButtonL()), sizeof(str));
++    Q_strncpyz(str, va(ZH_Translate("Double-tap  %s  then press  %s"), GetUseButtonL(), GetGrenadeButtonL()), sizeof(str));
+     Q_strncpyz(str2, "to place a Bouncing Betty", sizeof(str2));
+     x = (vid.width - getTextWidth(str, vid.scale)) / 2;
+ 
+@@ -2575,8 +2575,8 @@ HUD_GunGame(void)
+         sprintf(weapon_id, "You've passed all weapons!");
+         sprintf(point_info, "The Winner can choose to End the Game");
+     } else {
+-        sprintf(weapon_id, "%s [%d/32]", PR_GetString(sv_player->v.Weapon_Name), cl.stats[STAT_GUNGAME_IDX] + 1);
+-        sprintf(point_info, "[%d] Score until next Weapon", cl.stats[STAT_GUNGAME_SCOREGOAL]);
++        sprintf(weapon_id, "%s [%d/32]", ZH_Translate(PR_GetString(sv_player->v.Weapon_Name)), cl.stats[STAT_GUNGAME_IDX] + 1);
++        sprintf(point_info, ZH_Translate("[%d] Score until next Weapon"), cl.stats[STAT_GUNGAME_SCOREGOAL]);
+     }
+ 
+ 
+diff --git a/source/render/r_texture.c b/source/render/r_texture.c
+index 715249d..540d136 100644
+--- a/source/render/r_texture.c
++++ b/source/render/r_texture.c
+@@ -278,8 +278,15 @@ Hyena_PrepareTextureUpload(int texture, const hyena_texture_desc_t * desc, int c
+               desc->palette ? desc->palette_bpp : 4);
+             pixels = expanded;
+         }
+-        width  = Hyena_TextureDimension(width, false, 4, (int) gl_max_size.value, (int) gl_picmip.value);
+-        height = Hyena_TextureDimension(height, false, 4, (int) gl_max_size.value, (int) gl_picmip.value);
++        // Chinese UI glyphs must not inherit the world-texture cap or picmip.
++        // On Switch that cap defaults to 256 and destroys strokes in the atlas.
++        if (strcmp(desc->identifier, "charset_zh") != 0) {
++            width  = Hyena_TextureDimension(width, false, 4, (int) gl_max_size.value, (int) gl_picmip.value);
++            height = Hyena_TextureDimension(height, false, 4, (int) gl_max_size.value, (int) gl_picmip.value);
++        } else {
++            Con_Printf("Chinese UI atlas: %dx%d -> %dx%d (no texture reduction)\n",
++              desc->width, desc->height, width, height);
++        }
+         // These backends consume a box-filtered chain; native tiled storage can prepare its own levels.
+         if (!Hyena_PreparePixels(&prepared, pixels, desc->width, desc->height, width, height, 4,
+           true, false, desc->mip_levels ? HYENA_MAX_MIP_LEVELS - 1 : 0, 1, 1))

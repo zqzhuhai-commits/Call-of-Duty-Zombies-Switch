@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parents[1]
 out=root/'screenshots';out.mkdir(exist_ok=True)
 engine=root/'engine';binary=engine/'build/sdl/nzportable';data=engine/'romfs'
 env=dict(os.environ,SDL_AUDIODRIVER='dummy',LIBGL_ALWAYS_SOFTWARE='1')
-base=[str(binary),'-basedir',str(data),'-nosound','-nocdaudio','+vid_width','960','+vid_height','540','+show_fps','0']
+base=[str(binary),'-basedir',str(data),'-nosound','-nocdaudio','+vid_width','1280','+vid_height','720','+show_fps','0']
 log=(out/'desktop-menu.log').open('w')
 p=subprocess.Popen(base,cwd=data,env=env,stdout=log,stderr=subprocess.STDOUT)
 try:

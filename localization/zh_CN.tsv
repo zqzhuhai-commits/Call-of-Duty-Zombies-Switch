@@ -258,3 +258,68 @@ NOVEMBER	11月
 DECEMBER	12月
 Welcome, %s  	欢迎，%s  
 Game Starting In..  %i	距离开始：%i 秒
+Hold %b to Drop the Nuke	按住 %b 投放核弹
+Hold %b to Revive Player	按住 %b 复活队友
+Hold %b to buy %s	按住 %b 购买%s
+Hold %b to buy Ammo for %s	按住 %b 购买%s弹药
+Hold %b to open Door	按住 %b 开门
+Hold %b to remove Debris	按住 %b 清除障碍
+Hold %b to Rebuild Barrier	按住 %b 修复木板
+Hold %b to Turn On the Power	按住 %b 接通电源
+Hold %b to End the Game	按住 %b 结束本局
+Hold %b for Mystery Box	按住 %b 使用神秘箱
+Hold %b for %s	按住 %b 拾取%s
+Hold %b to Pack-a-Punch	按住 %b 强化武器
+Hold %b to use Teleporter	按住 %b 使用传送器
+Hold %b to initate link to pad	按住 %b 开始连接传送台
+Hold %b to link pad with core	按住 %b 连接传送台与核心
+Hold %b to Activate the Trap	按住 %b 启动陷阱
+The Power must be Activated first	需要先接通电源
+It doesn't seem to be working..	设备暂时无法使用……
+Teleporter is cooling down	传送器正在冷却
+Link not active	尚未建立连接
+[Cost: %i]	[费用：%i]
+Score	积分
+Kills	击杀
+Downs	倒地
+Revives	救援
+Headshots	爆头
+You Survived %i Rounds	你存活了 %i 波
+Cycle all Weapons to WIN!	完成所有武器阶段即可获胜！
+Ballistic Knife FTW!	用弹道刀赢得胜利！
+It's a stand-off!	与亡者决一死战！
+Round	波次
+Reviving...	正在复活……
+LOW AMMO	弹药不足
+Reload	换弹
+NO AMMO	弹药耗尽
+You've passed all weapons!	你已完成全部武器阶段！
+The Winner can choose to End the Game	胜者可选择结束本局
+[%d] Score until next Weapon	还需 [%d] 积分升级武器
+to place a Bouncing Betty	即可放置弹跳地雷
+Double-tap  %s  then press  %s	连按两次 %s 再按 %s
+Double-tap  	连按两次 
+Double-tap     then press   	连按两次    再按   
+WAYPOINT MODE	路径编辑模式
+Create/Tweak Zombie AI Paths	创建或调整僵尸行动路径
+Nacht der Untoten	亡者之夜
+Warehouse	仓库
+Double Tap Root Beer	双发饮料
+Double Tap II	双发饮料二型
+Electric Cherry	电樱桃
+Widow's Wine	寡妇酒
+Death Perception	死亡感知
+Tombstone Soda	墓碑饮料
+Who's Who	替身饮料
+Who's Who?	替身饮料
+Vulture Aid	秃鹫援助
+Quick Revive Soda	快速复活
+Juggernog	厚血饮料
+Full Ammo	弹药全满
+BONFIRE SALE	强化特价
+MAX AMMO	弹药全满
+INSTA-KILL	一击必杀
+DOUBLE POINTS	双倍积分
+FIRE SALE	特价促销
+CARPENTER	木匠
+NUKE	核弹
