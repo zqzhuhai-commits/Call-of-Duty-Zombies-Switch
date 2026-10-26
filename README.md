@@ -43,3 +43,12 @@
 ## 截图
 
 桌面验证工作流会编译同一中文代码并捕获实际菜单和地图画面，产物名称明确标为 Desktop。它们不是 Switch 实机或模拟器截图，也不代表 Switch 性能。
+
+## NSP 打包准备
+
+`bash tools/prepare-nsp.sh` 将编译好的 ELF 转为应用 NSO，并生成 NPDM、NACP 与图标。
+Title ID：`05004E5A505A4800`，配置与普通 NRO 分开保存在 `switch/nzp-zh/`。
+
+最终打包工具采用 hacBrewPack，需要私下提供 `header_key` 和对应的 `key_area_key_application_xx`。
+准备好本地工具和密钥文件后运行 `bash tools/pack-nsp.sh /absolute/path/to/prod.keys`。
+仓库与自动构建不保存密钥。应用配置仍需实机验证，打包成功不等于已可正常游玩。
