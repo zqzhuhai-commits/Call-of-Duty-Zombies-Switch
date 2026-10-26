@@ -9,39 +9,104 @@
   "process_category": 0,
   "pool_partition": 0,
   "is_64_bit": true,
-  "address_space_type": 3,
+  "address_space_type": 1,
   "is_retail": true,
-  "filesystem_access": {"permissions": "0xFFFFFFFFFFFFFFFF"},
-  "service_access": ["*"],
+  "filesystem_access": {
+    "permissions": "0xFFFFFFFFFFFFFFFF"
+  },
+  "service_access": [
+    "*"
+  ],
   "kernel_capabilities": [
-    {"type": "kernel_flags", "value": {"highest_thread_priority": 59, "lowest_thread_priority": 28, "highest_cpu_id": 3, "lowest_cpu_id": 0}},
-    {"type": "syscalls", "value": {
-      "set_heap": 1, "set_memory_permission": 2, "set_memory_attribute": 3,
-      "map_memory": 4, "unmap_memory": 5, "query_memory": 6,
-      "exit_process": 7, "create_thread": 8, "start_thread": 9,
-      "exit_thread": 10, "sleep_thread": 11, "get_thread_priority": 12,
-      "set_thread_priority": 13, "get_thread_core_mask": 14, "set_thread_core_mask": 15,
-      "get_current_processor_number": 16, "signal_event": 17, "clear_event": 18,
-      "map_shared_memory": 19, "unmap_shared_memory": 20, "create_transfer_memory": 21,
-      "close_handle": 22, "reset_signal": 23, "wait_synchronization": 24,
-      "cancel_synchronization": 25, "arbitrate_lock": 26, "arbitrate_unlock": 27,
-      "wait_process_wide_key_atomic": 28, "signal_process_wide_key": 29,
-      "get_system_tick": 30, "connect_to_named_port": 31,
-      "send_sync_request": 33, "get_process_id": 36, "get_thread_id": 37,
-      "break": 38, "output_debug_string": 39, "get_info": 41,
-      "flush_data_cache": 43, "map_physical_memory": 44, "unmap_physical_memory": 45,
-      "get_resource_limit_limit_value": 48, "get_resource_limit_current_value": 49,
-      "set_thread_activity": 50, "get_thread_context": 51,
-      "wait_for_address": 52, "signal_to_address": 53,
-      "synchronize_preemption_state": 54, "get_resource_limit_peak_value": 55,
-      "create_session": 64, "accept_session": 65, "reply_and_receive": 67,
-      "create_event": 69, "create_code_memory": 75, "control_code_memory": 76,
-      "map_transfer_memory": 81, "unmap_transfer_memory": 82,
-      "get_system_info": 111
-    }},
-    {"type": "application_type", "value": 1},
-    {"type": "min_kernel_version", "value": "0x30"},
-    {"type": "handle_table_size", "value": 1024},
-    {"type": "debug_flags", "value": {"allow_debug": false, "force_debug": false}}
+    {
+      "type": "kernel_flags",
+      "value": {
+        "highest_thread_priority": 59,
+        "lowest_thread_priority": 28,
+        "highest_cpu_id": 2,
+        "lowest_cpu_id": 0
+      }
+    },
+    {
+      "type": "syscalls",
+      "value": {
+        "set_heap": 1,
+        "set_memory_permission": 2,
+        "set_memory_attribute": 3,
+        "map_memory": 4,
+        "unmap_memory": 5,
+        "query_memory": 6,
+        "exit_process": 7,
+        "create_thread": 8,
+        "start_thread": 9,
+        "exit_thread": 10,
+        "sleep_thread": 11,
+        "get_thread_priority": 12,
+        "set_thread_priority": 13,
+        "get_thread_core_mask": 14,
+        "set_thread_core_mask": 15,
+        "get_current_processor_number": 16,
+        "signal_event": 17,
+        "clear_event": 18,
+        "map_shared_memory": 19,
+        "unmap_shared_memory": 20,
+        "create_transfer_memory": 21,
+        "close_handle": 22,
+        "reset_signal": 23,
+        "wait_synchronization": 24,
+        "cancel_synchronization": 25,
+        "arbitrate_lock": 26,
+        "arbitrate_unlock": 27,
+        "wait_process_wide_key_atomic": 28,
+        "signal_process_wide_key": 29,
+        "get_system_tick": 30,
+        "connect_to_named_port": 31,
+        "send_sync_request": 33,
+        "get_process_id": 36,
+        "get_thread_id": 37,
+        "break": 38,
+        "output_debug_string": 39,
+        "get_info": 41,
+        "flush_data_cache": 43,
+        "map_physical_memory": 44,
+        "unmap_physical_memory": 45,
+        "get_resource_limit_limit_value": 48,
+        "get_resource_limit_current_value": 49,
+        "set_thread_activity": 50,
+        "get_thread_context": 51,
+        "wait_for_address": 52,
+        "signal_to_address": 53,
+        "synchronize_preemption_state": 54,
+        "get_resource_limit_peak_value": 55,
+        "create_session": 64,
+        "accept_session": 65,
+        "reply_and_receive": 67,
+        "create_event": 69,
+        "create_code_memory": 75,
+        "control_code_memory": 76,
+        "map_transfer_memory": 81,
+        "unmap_transfer_memory": 82,
+        "get_system_info": 111
+      }
+    },
+    {
+      "type": "application_type",
+      "value": 1
+    },
+    {
+      "type": "min_kernel_version",
+      "value": "0x30"
+    },
+    {
+      "type": "handle_table_size",
+      "value": 1024
+    },
+    {
+      "type": "debug_flags",
+      "value": {
+        "allow_debug": false,
+        "force_debug": false
+      }
+    }
   ]
 }

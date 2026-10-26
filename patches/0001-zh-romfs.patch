@@ -240,6 +240,19 @@ index 0df5e7f..1318948 100644
      if (lobby_delta > 0) {
          int image_width = (vid.width/3)/vid.scale;
          int image_height = (vid.height/3)/vid.scale;
+diff --git a/source/menu/menu_sys.c b/source/menu/menu_sys.c
+index 10c43f8..18f41cf 100644
+--- a/source/menu/menu_sys.c
++++ b/source/menu/menu_sys.c
+@@ -95,7 +95,7 @@ char* strtoupper(char* s)
+ 
+ 	char* p = s;
+ 	while (*p != '\0') {
+-		*p = toupper(*p);
++		*p = toupper((unsigned char)*p);
+ 		p++;
+ 	}
+ 
 diff --git a/source/nzportable_def.h b/source/nzportable_def.h
 index 9628380..f9d275f 100644
 --- a/source/nzportable_def.h

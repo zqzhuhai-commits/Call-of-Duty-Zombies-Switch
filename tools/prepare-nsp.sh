@@ -9,7 +9,7 @@ test -f engine/romfs/nzp/gfx/charset_zh.tga
 mkdir -p dist/nsp-ready/exefs dist/nsp-ready/control
 elf2nso dist/NZP-ZH.elf dist/nsp-ready/exefs/main
 npdmtool packaging/npdm.json dist/nsp-ready/exefs/main.npdm
-nacptool --create '使命召唤：纳粹僵尸' 'Xiao Fan' '0.1.4' dist/nsp-ready/control/control.nacp --titleid=05004E5A505A4000
+nacptool --create '使命召唤：纳粹僵尸' 'Xiao Fan' '0.1.6' dist/nsp-ready/control/control.nacp --titleid=05004E5A505A4000
 cp art/cod-zombies-icon-256.jpg dist/nsp-ready/control/icon_AmericanEnglish.dat
 cp art/cod-zombies-icon-256.jpg dist/nsp-ready/control/icon_SimplifiedChinese.dat
 printf '%s\n' 'NSO/NPDM/NACP prepared. NSP encryption/packaging and hardware testing are still pending.'
