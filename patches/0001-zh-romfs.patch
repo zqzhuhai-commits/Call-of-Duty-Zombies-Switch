@@ -439,7 +439,7 @@ index e4f1024..7aeadc7 100644
      return width;
  }
 diff --git a/source/render/r_hud.c b/source/render/r_hud.c
-index 0276f84..a97764d 100644
+index 0276f84..29a9418 100644
 --- a/source/render/r_hud.c
 +++ b/source/render/r_hud.c
 @@ -21,6 +21,7 @@
@@ -450,6 +450,15 @@ index 0276f84..a97764d 100644
  
  #ifdef PSP_VFPU
  #include <pspmath.h>
+@@ -189,7 +190,7 @@ static void
+ HUD_DrawTextBackdrop(int x, int y, const char * text, int r, int g, int b, int a, float scale)
+ {
+     int pad    = (int) (2 * scale);
+-    int height = (int) (8 * scale);
++    int height = (int) (12 * scale);
+     int alpha  = (int) (cl_textopacity.value * a);
+ 
+     if (alpha > 0)
 @@ -545,9 +546,9 @@ HUD_UsePrint(int index, int cost)
      button      = HUD_KeyHasIcon(hud_use_key) ? "  " : HUD_UseKeyLabel(hud_use_key);
  
@@ -462,6 +471,15 @@ index 0276f84..a97764d 100644
      hud_use_type    = index;
      hud_use_until   = Sys_FloatTime() + 0.1;
      scr_usetime_off = 0.1f;
+@@ -579,7 +580,7 @@ HUD_DrawUsePrint(void)
+           255, 255, 0, 255, vid.scale);
+     if (hud_usecost[0])
+         HUD_DrawTextBackdrop((vid.width - getTextWidth(hud_usecost, vid.scale)) / 2,
+-          y + 10 * vid.scale, hud_usecost, 255, 255, 255, 255, vid.scale);
++          y + 14 * vid.scale, hud_usecost, 255, 255, 255, 255, vid.scale);
+     UNUSED(hud_use_button_x);
+ }
+ 
 @@ -1008,7 +1009,7 @@ HUD_EndScreen(void)
      int row_height    = 11 * vid.scale;
      float text_scale  = vid.scale;
@@ -481,7 +499,17 @@ index 0276f84..a97764d 100644
          HUD_DrawTextBackdrop((vid.width - getTextWidth(text, 1.5f * vid.scale)) / 2,
            68 * vid.scale, text, 255, 255, 255, 255, 1.5f * vid.scale);
      }
-@@ -2179,7 +2179,7 @@ HUD_BettyPrompt(void)
+@@ -1969,7 +1969,8 @@ HUD_ProgressBar(void)
+         Draw_FillByColor((vid.width) / 2 - 51, vid.height * 0.75 - 1, 102, 5, 0, 0, 0, 100);
+         Draw_FillByColor((vid.width) / 2 - 50, vid.height * 0.75, progressbar, 3, 255, 255, 255, 100);
+ 
+-        Draw_String((vid.width - (88)) / 2, vid.height * 0.75 + 10, "Reviving...");
++        Draw_ColoredStringCentered(vid.height * 0.75 + 10, "Reviving...",
++          255, 255, 255, 255, vid.scale);
+     }
+ }
+ 
+@@ -2179,7 +2180,7 @@ HUD_BettyPrompt(void)
      char str2[32];
      int x;
  
@@ -490,7 +518,7 @@ index 0276f84..a97764d 100644
      Q_strncpyz(str2, "to place a Bouncing Betty", sizeof(str2));
      x = (vid.width - getTextWidth(str, vid.scale)) / 2;
  
-@@ -2575,8 +2575,8 @@ HUD_GunGame(void)
+@@ -2575,8 +2576,8 @@ HUD_GunGame(void)
          sprintf(weapon_id, "You've passed all weapons!");
          sprintf(point_info, "The Winner can choose to End the Game");
      } else {
