@@ -1,7 +1,9 @@
 # Icon generation
 
-Generated using the built-in image generation tool.
+Generated with built-in imagegen.
 
-Prompt: square cinematic zombie-survival game icon; an undead soldier with amber eyes and a battered helmet, smoky ruined battlefield, ember orange and charcoal palette, Chinese title “使命召唤” and “僵尸”, edge-to-edge artwork, no console frame or additional text.
+Prompt: Square cinematic zombie-survival icon; undead WWII soldier with glowing amber eyes and battered steel helmet, burning ruined city, charcoal and orange palette. Large simplified Chinese title in two lines: 使命召唤 / 纳粹僵尸. No political emblems, English, border or watermark.
 
-The generated source is retained separately; cod-zombies-icon-256.jpg is the 256×256 JPEG used by the Switch application control archive.
+Application title: 使命召唤：纳粹僵尸. Publisher: Xiao Fan.
+
+The generated PNG is retained locally; cod-zombies-icon-256.jpg is the 256×256 RGB baseline JPEG used for both NRO and NSP control icons.
