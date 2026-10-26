@@ -1,0 +1,29 @@
+name: Native NSP startup probes
+on:
+  push:
+    branches: [main]
+    paths: ['diagnostics/native-probes/**', '.github/workflows/native-probes.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    container: devkitpro/devkita64:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile minimal libnx programs
+        shell: bash
+        run: |
+          export PATH="$DEVKITPRO/devkitA64/bin:$DEVKITPRO/tools/bin:$PATH"
+          mkdir -p dist/native-probes
+          for mode in A B; do
+            extra=()
+            if [ "$mode" = B ]; then extra=(-DPROBE_EARLY); fi
+            aarch64-none-elf-gcc -O2 -g -Wall -Wextra -ffunction-sections -fdata-sections -fPIE -D__SWITCH__ -march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -I"$DEVKITPRO/libnx/include" "${extra[@]}" diagnostics/native-probes/main.c -specs="$DEVKITPRO/libnx/switch.specs" -Wl,--gc-sections -L"$DEVKITPRO/libnx/lib" -lnx -o "dist/native-probes/probe-$mode.elf"
+            elf2nso "dist/native-probes/probe-$mode.elf" "dist/native-probes/probe-$mode.nso"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NZP-Native-Startup-Probes
+          path: dist/native-probes/
