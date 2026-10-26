@@ -21,6 +21,8 @@ jobs:
         run: bash tools/build-switch.sh
       - name: Prepare NSP application files (no keys)
         run: bash tools/prepare-nsp.sh
+      - name: Prepare NRO forwarder files (no keys)
+        run: python3 tools/prepare-forwarder.py
       - uses: actions/upload-artifact@v4
         with:
           name: NZP-ZH-Switch-build
@@ -39,8 +41,8 @@ jobs:
           path: dist
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.0-zh-preview
-          name: NZP Chinese Switch preview (hardware testing required)
+          tag_name: v0.1.4-zh-preview
+          name: 使命召唤：纳粹僵尸 0.1.4 NRO
           prerelease: true
           body: |
             Chinese Switch build with embedded game resources. This is an NRO preview, not the final NSP.
