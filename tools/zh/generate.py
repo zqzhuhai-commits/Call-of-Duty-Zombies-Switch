@@ -20,9 +20,13 @@ while width<cols*cell: width*=2
 im=Image.new('RGBA',(width,height),(255,255,255,0));d=ImageDraw.Draw(im)
 f=ImageFont.truetype(a.font,34)
 f.set_variation_by_axes([550])
+bounds=[f.getbbox(chr(cp),anchor="mm") for cp in cps]
+top=min(b[1] for b in bounds);bottom=max(b[3] for b in bounds)
+assert bottom-top <= cell, "Glyph height exceeds cell"
+baseline_y=(cell-(bottom-top))//2-top
 for i,cp in enumerate(cps):
     x=(i%cols)*cell;y=(i//cols)*cell
-    d.text((x+cell/2,y+cell/2),chr(cp),font=f,fill=(255,255,255,255),anchor='mm')
+    d.text((x+cell/2,y+baseline_y),chr(cp),font=f,fill=(255,255,255,255),anchor='mm')
 out=root/'overlay/romfs/nzp/gfx';out.mkdir(parents=True,exist_ok=True)
 import io,gzip,base64
 buf=io.BytesIO(); im.save(buf,format='TGA')
