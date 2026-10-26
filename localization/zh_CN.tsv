@@ -1,0 +1,222 @@
+MAIN MENU	主菜单
+SOLO	单人游戏
+Play Solo.	开始单人生存。
+COOPERATIVE	合作模式（未开放）
+CONFIGURATION	设置
+Tweak Game Related Options	调整游戏设置。
+Tweak Game related Options.	调整游戏设置。
+CHARACTER BIOS	角色介绍
+View Character Bios	查看角色介绍。
+CREDITS	制作名单
+NZ:P Team + Special Thanks	NZ:P 开发团队与特别鸣谢。
+QUIT GAME	退出游戏
+Return to Home Screen	返回主机主界面。
+Are you sure you want to quit?	确定退出吗？
+Are you sure you want to restart?	确定重新开始吗？
+You will lose any progress that you have made.	本局进度将会丢失。
+GET ME OUTTA HERE!	确定
+I WILL PERSEVERE	取消
+VIDEO	画面
+Visual Fidelity options.	调整画面设置。
+AUDIO	声音
+Volume sliders.	调整声音大小。
+CONTROLS	操作
+Control Options and Bindings.	调整操作与按键。
+ACCESSIBILITY	辅助功能
+Content, Interface, and Readability options.	调整界面、内容和可读性。
+OPEN CONSOLE	开发者控制台
+Access the Developer Console.	打开开发者控制台。
+BACK	返回
+Return to Main Menu.	返回主菜单。
+Return to Configuration Menu.	返回设置菜单。
+Return to Control Options.	返回操作设置。
+Return to Controls Options.	返回操作设置。
+Return to Map Selection.	返回地图选择。
+Return to Stock Map selection.	返回内置地图选择。
+Return to Pre-Game Menu.	返回准备界面。
+APPLY	应用
+Save & Apply Settings.	应用当前设置。
+AUDIO OPTIONS	声音设置
+MASTER VOLUME	主音量
+Volume for all Audio.	调整游戏音效音量。
+MUSIC VOLUME	音乐音量
+Volume for Background Music.	调整背景音乐音量。
+VIDEO OPTIONS	画面设置
+SHOW FPS	显示帧率
+Toggles display of FPS Values.	显示或隐藏帧率。
+MAX FPS	帧率上限
+Sets the max FPS Value.	设置最高帧率。
+FIELD OF VIEW	视野范围
+Change Camera Field of View	调整镜头视野范围。
+GAMMA	亮度
+Adjust game Black Level.	调整暗部亮度。
+ULTRAWIDE MODE	界面居中
+Condenses HUD closer to center of Display.	将游戏界面集中到屏幕中间。
+PARTICLES	粒子效果
+Trade Particle Effects for Performance.	减少粒子效果可提升性能。
+TEXTURE FILTERING	纹理过滤
+Choose 3D Environment Filtering Mode.	选择场景纹理过滤方式。
+DITHERING	色彩抖动
+Toggle Decrease in Color Banding	减少画面色带。
+FULLSCREEN	全屏
+Toggle desktop fullscreen mode.	切换全屏显示。
+VSYNC	垂直同步
+Synchronize frames to the display refresh rate.	同步画面帧率与屏幕刷新率。
+ENABLED	开启
+DISABLED	关闭
+ON	开
+OFF	关
+YES	是
+NO	否
+NEAREST	邻近采样
+LINEAR	线性过滤
+CLASSIC	经典模式
+GUN GAME	枪械进阶
+HARDCORE	硬核模式
+WILD WEST	狂野西部
+STICKS & STONES	刀与手雷
+FEVER	狂热模式
+NORMAL	普通
+EASY	简单
+HARD	困难
+NIGHTMARE	噩梦
+CONTROL OPTIONS	操作设置
+CONTROL BINDINGS	按键设置
+AIM ASSIST	辅助瞄准
+Toggle Assisted-Aim to Improve Targetting.	开启辅助瞄准。
+LOOK SENSITIVITY	视角灵敏度
+Alter look Sensitivity.	调整视角移动速度。
+LOOK ACCELERATION	视角加速
+Alter look Acceleration.	调整视角加速幅度。
+INVERT LOOK	反转视角
+Invert Y-Axis Camera Input.	反转镜头上下方向。
+CONTROLLER GLYPHS	按键图标
+Change the controller glyph tilemap.	选择手柄按键图标样式。
+RUMBLE	手柄震动
+Enable Game Pad Vibration.	开启手柄震动反馈。
+GYROSCOPE	体感瞄准
+Configure Gyroscope.	调整体感瞄准设置。
+BINDINGS	按键映射
+Change Input Bindings.	修改按键对应的操作。
+GYRO-AIM OPTIONS	体感瞄准设置
+MODE	模式
+Toggle Gyroscope behavior.	选择体感瞄准的启用方式。
+X-AXIS SENSITIVITY	水平灵敏度
+Adjust horizontal Gyroscope sensitivity.	调整水平体感灵敏度。
+Y-AXIS SENSITIVITY	垂直灵敏度
+Adjust vertical Gyroscope sensitivity.	调整垂直体感灵敏度。
+ADS DAMPENING	开镜降速
+Reduce Gyroscope sensitivity in ADS.	开镜时降低体感灵敏度。
+ALWAYS	始终开启
+ADS ONLY	仅开镜时
+JUMP	跳跃
+SPRINT	冲刺
+CHANGE STANCE	切换姿态
+SWAP WEAPON	切换武器
+INTERACT	互动
+RELOAD	换弹
+MELEE	近战
+PRIMARY GRENADE	主要投掷物
+SECONDARY GRENADE	次要投掷物
+AIM DOWN SIGHTS	开镜瞄准
+SHOOT WEAPON	开火
+NEXT PAGE	下一页
+PREVIOUS PAGE	上一页
+Advance to the next Keybind page.	查看下一页按键。
+Return to last Keybind page.	查看上一页按键。
+Advance to next User Map page.	查看下一页地图。
+Return to last User Map page.	查看上一页地图。
+SELECT MAP: SOLO	单人地图选择
+SELECT MAP: COOP	合作地图选择
+USER MAPS	自定义地图
+View User-Created Maps.	查看自定义地图。
+RANDOM	随机地图
+Feeling indecisive? Try rolling the dice.	随机选择一张地图。
+PRE-GAME	准备开始
+START GAME	开始游戏
+Face the Horde!	迎战尸潮！
+CANCEL	取消
+..Take it back!	取消开始倒计时。
+GAME SETTINGS	游戏设置
+Adjust Gameplay Options.	调整本局游戏规则。
+NOT SUPPORTED	暂不支持
+GAME MODE	游戏模式
+DIFFICULTY	难度
+START ROUND	起始波次
+Round to begin the Game on.	设置游戏开始时的波次。
+MAGIC	特殊道具
+Whether to allow Perks, Power-Ups, and the Mystery Box.	允许技能饮料、强化道具和神秘箱。
+HEADSHOTS ONLY	仅限爆头
+Headshots are the only means of Death. Explosives don't work, either.	只能爆头击杀，爆炸伤害也无效。
+HORDE SIZE	尸潮规模
+Maximum Zombies that can Active at once.	设置同时出现的僵尸数量上限。
+FAST ROUNDS	快速波次
+Minimize Time between Rounds.	缩短波次之间的等待时间。
+Classic Round-Based Zombies.	经典的逐波僵尸生存模式。
+Race to earn Score to cycle through Weaponry.	获取分数，逐步升级手中的武器。
+No HUD? Two Perks? 150% Item Cost? No Problem.	无界面、两种技能、道具价格提高。
+Ole Fashioned stand-off between you and the Dead.	与亡者展开一场西部对决。
+Knives-and-Nades only. Grenades Explode on Contact.	仅用刀与手雷，手雷触碰即爆。
+The cycle continues. Old meets new in this Cold War inspired mode!	融合新旧规则的冷战风格模式。
+Normal Zombies gameplay.	标准的僵尸生存体验。
+Less & Slower Zombies. More Power-Ups. More Health.	僵尸更少更慢，道具与生命更多。
+More & Faster Zombies. Less Power-Ups. Less Health.	僵尸更多更快，道具与生命更少。
+Hellish Zombies. Earn Less Score. Rare Power-Ups. 1 hit KO.	分数更少、道具稀缺，一击倒地。
+Game Mode	游戏模式
+Difficulty	难度
+Start Round	起始波次
+Magic	特殊道具
+Headshots Only	仅限爆头
+Horde Size	尸潮规模
+Fast Rounds	快速波次
+PAUSED	已暂停
+RESUME CARNAGE	继续游戏
+Return to Game.	返回当前游戏。
+RESTART LEVEL	重新开始
+Tough luck? Give things another go.	重新挑战当前地图。
+OPTIONS	设置
+END GAME	结束本局
+ACCESSIBILITY OPTIONS	辅助功能设置
+HITMARKERS	命中标记
+HUD Hitmarkers for visual feedback.	命中敌人时显示标记。
+TEXT BACKDROP	文字背景
+Opacity of backdrop for text elements on HUD.	调整提示文字的背景透明度。
+ACCESSIBLE COLORS	高辨识配色
+Uses enhanced Player colors to improve visibilty.	提高玩家颜色的辨识度。
+SCREEN FLASHES	屏幕闪光
+Choose the color of screen flashes.	选择屏幕闪光的颜色。
+MONTH SPOOF	节日月份
+Lie to the game about the current Month, if you are host.	指定游戏使用的月份效果。
+CROSSHAIR DOT	准星中心点
+Add a dot to the middle of the crosshair.	在准星中央显示小点。
+CAMERA BOB	镜头晃动
+Scale for Camera Bob and Roll.	调整移动时的镜头晃动。
+SPRINT MELEE DIVE	冲刺近战飞扑
+Dive when Melee while Sprinting.	冲刺时近战可触发飞扑。
+GAMEPAD LIGHTBAR	手柄灯光
+Enable Light Bar feedback.	开启手柄灯光反馈。
+CONFIRM	确认
+DELETE	删除
+ADD CHAR	添加字符
+Press 	按
+ to skip	跳过
+LOADING	正在加载
+Loading...	正在加载……
+GAME OVER	游戏结束
+ROUND	波次
+Quick Revive	快速复活
+Jugger-Nog	厚血饮料
+Speed Cola	快手饮料
+Double Tap	双发饮料
+Stamin-Up	耐力饮料
+PhD Flopper	防爆饮料
+Deadshot Daiquiri	神射饮料
+Mule Kick	三枪饮料
+Mystery Box	神秘箱
+Pack-A-Punch	武器强化机
+Max Ammo	弹药全满
+Insta-Kill	一击必杀
+Double Points	双倍积分
+Carpenter	木匠
+Fire Sale	特价促销
+Nuke	核爆

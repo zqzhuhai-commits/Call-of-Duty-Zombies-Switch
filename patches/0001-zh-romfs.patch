@@ -1,0 +1,375 @@
+diff --git a/Makefile.nx b/Makefile.nx
+index 89e420d..b9683e8 100644
+--- a/Makefile.nx
++++ b/Makefile.nx
+@@ -9,9 +9,9 @@ endif
+ TOPDIR ?= $(CURDIR)
+ include $(DEVKITPRO)/libnx/switch_rules
+ 
+-APP_TITLE	:=	Nazi Zombies Portable
+-APP_AUTHOR	:=	NZP Team
+-APP_VERSION	:=	2.0.0-indev
++APP_TITLE	:=	NZP 僵尸生存 中文版
++APP_AUTHOR	:=	NZP Team / Xiao Fan
++APP_VERSION	:=	0.1.0-zh
+ ICON        :=  source/platform/nx/art/icon.jpg
+ 
+ TARGET		:=	nzportable
+@@ -20,7 +20,7 @@ SOURCES		:=	source source/qcvm source/tests
+ #DATA		:=	data
+ INCLUDES	:=	include
+ ICON		:= 	source/platform/nx/art/icon.jpg
+-#ROMFS		:=	romfs
++ROMFS		:=	romfs
+ 
+ #---------------------------------------------------------------------------------
+ # options for code generation
+diff --git a/source/cl_demo.c b/source/cl_demo.c
+index afc876e..6d9192f 100644
+--- a/source/cl_demo.c
++++ b/source/cl_demo.c
+@@ -235,7 +235,7 @@ void CL_Record_f (void)
+ 		track = -1;	
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wformat-truncation"
+-	snprintf (name, MAX_OSPATH, "%s/%s", com_gamedir, Cmd_Argv(1));
++	snprintf (name, MAX_OSPATH, "%s/%s", COM_WRITE_DIR, Cmd_Argv(1));
+ #pragma GCC diagnostic pop
+ 	
+ //
+diff --git a/source/cl_slist.c b/source/cl_slist.c
+index 6759ce6..170d901 100644
+--- a/source/cl_slist.c
++++ b/source/cl_slist.c
+@@ -66,7 +66,7 @@ void SList_Shutdown (void)
+ 		return;
+ 
+ 	//if (!(f = fopen("servers.lst", "wt")))
+-    if (!(f = fopen(va("%s/servers.lst", com_gamedir), "wt")))
++    if (!(f = fopen(va("%s/servers.lst", COM_WRITE_DIR), "wt")))
+ 	{
+ 		Con_DPrintf ("Couldn't open servers.lst\n");
+ 		return;
+@@ -151,7 +151,7 @@ void SList_Load (void)
+ 	char	line[128], *desc, *addr;
+ 	FILE	*f;
+ 
+-	if (!(f = fopen (va("%s/servers.lst", com_gamedir), "rt")))
++	if (!(f = fopen (va("%s/servers.lst", COM_WRITE_DIR), "rt")))
+ 	//if (!(f = fopen("servers.lst", "rt")))
+ 		return;
+ 
+diff --git a/source/console.c b/source/console.c
+index a16315e..f37313f 100644
+--- a/source/console.c
++++ b/source/console.c
+@@ -252,9 +252,9 @@ void Con_Init (void)
+ 
+ 	if (con_debuglog)
+ 	{
+-		if (strlen (com_gamedir) < (MAXGAMEDIRLEN - strlen (t2)))
++		if (strlen (COM_WRITE_DIR) < (MAXGAMEDIRLEN - strlen (t2)))
+ 		{
+-			sprintf (debuglogfile, "%s%s", com_gamedir, t2);
++			sprintf (debuglogfile, "%s%s", COM_WRITE_DIR, t2);
+ 			unlink (debuglogfile);
+ 		}
+ 	}
+diff --git a/source/host.c b/source/host.c
+index f6a432c..264463a 100644
+--- a/source/host.c
++++ b/source/host.c
+@@ -263,7 +263,7 @@ void Host_WriteConfiguration (void)
+ // config.cfg cvars
+ 	if (host_initialized && !isDedicated)
+ 	{
+-		f = fopen(va("%s/%sconfig.cfg%s", com_gamedir, FILE_SPECIAL_PREFIX, FILE_SPECIAL_SUFFIX), "w");
++		f = fopen(va("%s/%sconfig.cfg%s", COM_WRITE_DIR, FILE_SPECIAL_PREFIX, FILE_SPECIAL_SUFFIX), "w");
+ 		if (!f)
+ 		{
+ 			Con_Printf ("Couldn't write config.cfg.\n");
+diff --git a/source/host_cmd.c b/source/host_cmd.c
+index e39190e..abe0360 100644
+--- a/source/host_cmd.c
++++ b/source/host_cmd.c
+@@ -472,7 +472,7 @@ void Host_Savegame_f (void)
+ 		}
+ 	}
+ 
+-	snprintf (name, MAX_OSPATH + 1, "%s/%s", com_gamedir, Cmd_Argv(1));
++	snprintf (name, MAX_OSPATH + 1, "%s/%s", COM_WRITE_DIR, Cmd_Argv(1));
+ 	COM_DefaultExtension (name, ".sav");
+ 
+ 	Con_Printf ("Saving game to %s...\n", name);
+@@ -546,7 +546,7 @@ void Host_Loadgame_f (void)
+ 
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wformat-truncation"
+-	snprintf(name, MAX_OSPATH, "%s/%s", com_gamedir, Cmd_Argv(1));
++	snprintf(name, MAX_OSPATH, "%s/%s", COM_WRITE_DIR, Cmd_Argv(1));
+ #pragma GCC diagnostic pop
+ 	COM_DefaultExtension (name, ".sav");
+ 
+diff --git a/source/menu/menu_loadscreen_tips.h b/source/menu/menu_loadscreen_tips.h
+index 8fc4e90..31f03ec 100644
+--- a/source/menu/menu_loadscreen_tips.h
++++ b/source/menu/menu_loadscreen_tips.h
+@@ -1,56 +1,21 @@
+ #ifndef _MENU_LOADTIPS_H_
+ #define _MENU_LOADTIPS_H_
+-
+-static const char *const loading_tips[] =
+-{
+-    "Now with Font Kerning.",
+-    "Quick Revive will resurrect you in Solo.",
+-    "Use Quick Revive to revive faster in Co-Op!",
+-    "Jugger-Nog increases your health.",
+-    "Speed Cola increases Reload speed.",
+-    "Speed Cola allows faster Barricade building",
+-    "Double Tap will improve Rate of Fire.",
+-    "Stamin-Up increases your Move Speed.",
+-    "Stamin-Up allows you to Sprint longer.",
+-    "PhD Flopper grants explosive immunity.",
+-    "Dive-to-prone with PhD to cause PAIN!",
+-    "Deadshot Daiquiri improves your accuracy.",
+-    "Deadshot Daiquiri removes sniper scope sway.",
+-    "Deadshot Daiquiri increases weapon accuracy.",
+-    "Carry three weapons with Mule Kick!",
+-    "Removed Herobrine.",
+-    "Pack-A-Punch the Kar98k to get to round 500!",
+-    "NZ:P is on too many platforms to keep count of.",
+-    "Dive on top of your friends to win!",
+-    "Open Source!",
+-    "Max Ammo doesn't refill your mag, so RELOAD!",
+-    "KA-BOOM!",
+-    "NZ:P has been in development since 2009.",
+-    "Hold a crawler and hunt for secrets.",
+-    "'Where's the armor station?'",
+-    "https://docs.nzp.gay/",
+-    "Also try FreeCS by eukara!",
+-    "Also try FreeHL by eukara!",
+-    "FTE is a pretty awesome Quake sourceport",
+-	"Powered by VRIL-YA technology.",
+-    "\"your lg is nothink on the lan\" - Cooller",
+-    "\"¦]\" - Cooller",
+-    "\"i'm not your chaotic on dm6\" - Cooller",
+-    "\"alltimes lucky\" - Cooller",
+-    "\"not my trouble\" - Cooller",
+-    "\"it's not internet\" - Cooller",
+-    "\"relax\" - Cooller",
+-    "Also try LibreQuad.",
+-    "Support the Internet Archive!",
+-    "Don't write your menus in CSQC, trust me!",
+-    "Down with all that's good and clean...",
+-    "...And you can't fucking annihilate me!",
+-    "As seen on GamingOnLinux!",
+-    "Use the Zap-O-Matic if you need to revive in a pinch.",
+-    "Don't try to statically link OpenSSL in MinGW!",
+-    "As seen on YouTube!",
+-    "Now with less bugs!",
+-    "Free software!"
++static const char *const loading_tips[] = {
++    "单人模式中，快速复活饮料可以让你重新站起来。",
++    "厚血饮料能提高生命上限。",
++    "快手饮料能加快换弹速度。",
++    "耐力饮料让你跑得更快、更久。",
++    "防爆饮料能抵御爆炸伤害。",
++    "神射饮料可提高武器精度。",
++    "三枪饮料让你同时携带三把武器。",
++    "拾取弹药全满前，记得先换弹。",
++    "留下一只爬行僵尸，可以争取探索时间。",
++    "积分可以用来买枪、开门和购买饮料。",
++    "强化武器需要先找到武器强化机。",
++    "NZ:P 项目自2009年起持续开发。",
++    "当前 Switch 版本以单人生存玩法为主。",
++    "可以在操作设置中调整体感瞄准。",
++    "注意身后，别让僵尸把你围住。",
++    "减少粒子效果可改善繁忙场景的表现。",
+ };
+-
+-#endif // _MENU_LOADTIPS_H_
++#endif
+diff --git a/source/nzportable_def.h b/source/nzportable_def.h
+index 9628380..f9d275f 100644
+--- a/source/nzportable_def.h
++++ b/source/nzportable_def.h
+@@ -48,6 +48,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ 
+ #define	GAMENAME	"nzp"
+ 
++#ifdef __SWITCH__
++extern char nzp_savedir[];
++#define COM_WRITE_DIR nzp_savedir
++#else
++#define COM_WRITE_DIR com_gamedir
++#endif
++
++
+ #define NUM_ZOMBIE_SKINS 7
+ 
+ // Platforms such as Nspire have filesystem restrictions where
+diff --git a/source/platform/nx/common.c b/source/platform/nx/common.c
+index 59f94d1..49709e6 100644
+--- a/source/platform/nx/common.c
++++ b/source/platform/nx/common.c
+@@ -71,6 +71,7 @@ unsigned short pop[] =
+ ,0x0000,0x0000,0x0000,0x0061,0x6661,0x0000,0x0000,0x0000
+ ,0x0000,0x0000,0x0000,0x0000,0x6500,0x0000,0x0000,0x0000
+ ,0x0000,0x0000,0x0000,0x0000,0x6400,0x0000,0x0000,0x0000
++
+ };
+ 
+ /*
+@@ -1216,7 +1217,7 @@ void COM_WriteFile (char *filename, void *data, int len)
+ 	int             handle;
+ 	char    name[MAX_OSPATH];
+ 	
+-	if (!COM_BuildFilePath(name, sizeof(name), com_gamedir, filename))
++	if (!COM_BuildFilePath(name, sizeof(name), COM_WRITE_DIR, filename))
+ 	{
+ 		Sys_Printf ("COM_WriteFile: path too long or invalid\n");
+ 		return;
+@@ -1716,6 +1717,15 @@ void COM_InitFilesystem (void)
+ 
+ 	if (COM_CheckParm ("-proghack"))
+ 		proghack = true;
++#ifdef __SWITCH__
++    {
++        char resource_dir[MAX_OSPATH];
++        Q_strncpyz(resource_dir, com_gamedir, sizeof(resource_dir));
++        COM_AddGameDirectory(nzp_savedir);
++        Q_strncpyz(com_gamedir, resource_dir, sizeof(com_gamedir));
++    }
++#endif
++
+ }
+ 
+ //Diabolickal HLBSP
+diff --git a/source/platform/nx/sys_nx.c b/source/platform/nx/sys_nx.c
+index d70ac38..c5b10d4 100644
+--- a/source/platform/nx/sys_nx.c
++++ b/source/platform/nx/sys_nx.c
+@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ #define QUAKE_HUNK_MB	128
+ 
+ 
++char nzp_savedir[] = "sdmc:/switch/nzp-zh/nzp";
+ qboolean isDedicated;
+ PadState pad;
+ 
+@@ -336,12 +337,26 @@ int main (int argc, char **argv)
+ 	padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+ 	padInitializeDefault(&pad);
+ 	
+-	chdir("/switch/nzportable/");
++    Result romfs_result = romfsInit();
++    if (R_FAILED(romfs_result)) {
++        consoleInit(NULL);
++        printf("NZ:P ZH: cannot mount built-in game data: 0x%08x\n", romfs_result);
++        printf("Use the self-contained build with its RomFS.\n");
++        while (appletMainLoop()) { padUpdate(&pad); if(padGetButtonsDown(&pad)&HidNpadButton_Plus) break; consoleUpdate(NULL); }
++        consoleExit(NULL);
++        return 1;
++    }
++    mkdir("sdmc:/switch", 0777);
++    mkdir("sdmc:/switch/nzp-zh", 0777);
++    mkdir(nzp_savedir, 0777);
++    if (chdir("sdmc:/switch/nzp-zh") != 0)
++        Sys_Error("Cannot create writable NZ:P configuration directory\n");
+ 
+ 	parms.memsize = QUAKE_HUNK_MB * 1024 * 1024;
+ 	
+ 	parms.membase = malloc(parms.memsize);
+-	parms.basedir = "/switch/nzportable/";
++	parms.basedir = "romfs:/";
++    if (!parms.membase) Sys_Error("Not enough application memory\n");
+ 
+ 	COM_InitArgv (argc, argv);
+ 
+@@ -360,5 +375,7 @@ int main (int argc, char **argv)
+ 		music_update();
+ 		oldtime = time;
+ 	}
++	Host_Shutdown();
++    romfsExit();
+ 	return 0;
+ }
+diff --git a/source/render/r_draw.c b/source/render/r_draw.c
+index e4f1024..ab40983 100644
+--- a/source/render/r_draw.c
++++ b/source/render/r_draw.c
+@@ -19,6 +19,8 @@
+ // Hyena owns texture storage and ordered quad submission.
+ 
+ #include "../nzportable_def.h"
++#include "../zh_text.h"
++static int zh_texture = -1;
+ 
+ #define DRAW2D_MAX_QUADS 2048
+ 
+@@ -119,6 +121,8 @@ Draw_Init(void)
+     char_texture = Image_LoadImage("gfx/charset", IMAGE_TGA, HYE_FILTER_NEAREST, true, false);
+     if (char_texture < 0)
+         Sys_Error("Could not load gfx/charset; verify the game data is installed correctly\n");
++    zh_texture = Image_LoadImage("gfx/charset_zh", IMAGE_TGA, HYE_FILTER_LINEAR, true, false);
++    if (zh_texture < 0) Sys_Error("Missing Chinese font atlas gfx/charset_zh.tga\n");
+     Clear_LoadingFill();
+     Draw_InitKerningMap();
+ }
+@@ -235,15 +239,25 @@ Draw_ColoredString(int x, int y, char * str, float r, float g, float b, float a,
+     if (scale_int < 1)
+         scale_int = 1;
+ 
+-    while (*str) {
+-        Draw_CharacterRGBA(x, y, (byte) * str, r, g, b, a, scale_int);
+-        if (*str == ' ')
+-            x += 4 * scale_int;
+-        else if ((byte) * str < 33 || (byte) * str > 126)
+-            x += 8 * scale_int;
+-        else
+-            x += (font_kerningamount[(byte) * str - 33] + 1) * scale_int;
+-        ++str;
++    const char *cursor = ZH_Translate(str);
++    while (*cursor) {
++        unsigned int cp = ZH_Decode(&cursor);
++        if (cp > 255) {
++            int glyph = ZH_GlyphIndex(cp);
++            if (glyph >= 0 && zh_texture >= 0) {
++                float u = (glyph % ZH_ATLAS_COLUMNS) * 16.0f / ZH_ATLAS_WIDTH;
++                float v = (glyph / ZH_ATLAS_COLUMNS) * 16.0f / ZH_ATLAS_HEIGHT;
++                Draw_QueueQuad(zh_texture, HYE_2D_TEXTURED | HYE_2D_BLEND,
++                    x, y-1*scale_int, x+10*scale_int, y+9*scale_int,
++                    u, v, u+16.0f/ZH_ATLAS_WIDTH, v+16.0f/ZH_ATLAS_HEIGHT, r,g,b,a);
++            } else Draw_CharacterRGBA(x,y,'?',r,g,b,a,scale_int);
++            x += 10 * scale_int;
++        } else {
++            Draw_CharacterRGBA(x,y,cp,r,g,b,a,scale_int);
++            if (cp == ' ') x += 4*scale_int;
++            else if (cp < 33 || cp > 126) x += 8*scale_int;
++            else x += (font_kerningamount[cp-33]+1)*scale_int;
++        }
+     }
+ }
+ 
+@@ -258,14 +272,13 @@ getTextWidth(char * str, float scale)
+ 
+     if (scale_int < 1)
+         scale_int = 1;
+-    while (*str) {
+-        if (*str == ' ')
+-            width += 4 * scale_int;
+-        else if ((byte) * str < 33 || (byte) * str > 126)
+-            width += 8 * scale_int;
+-        else
+-            width += (font_kerningamount[(byte) * str - 33] + 1) * scale_int;
+-        ++str;
++    const char *cursor = ZH_Translate(str);
++    while (*cursor) {
++        unsigned int cp = ZH_Decode(&cursor);
++        if (cp > 255) width += 10*scale_int;
++        else if (cp == ' ') width += 4*scale_int;
++        else if (cp < 33 || cp > 126) width += 8*scale_int;
++        else width += (font_kerningamount[cp-33]+1)*scale_int;
+     }
+     return width;
+ }
