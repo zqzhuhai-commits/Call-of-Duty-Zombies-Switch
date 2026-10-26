@@ -11,7 +11,7 @@ index 89e420d..b9683e8 100644
 -APP_VERSION	:=	2.0.0-indev
 +APP_TITLE	:=	使命召唤：僵尸
 +APP_AUTHOR	:=	Xiao Fan
-+APP_VERSION	:=	0.1.2-zh
++APP_VERSION	:=	0.1.3-zh
  ICON        :=  source/platform/nx/art/icon.jpg
  
  TARGET		:=	nzportable
@@ -295,7 +295,7 @@ index d70ac38..c5b10d4 100644
  	return 0;
  }
 diff --git a/source/render/r_draw.c b/source/render/r_draw.c
-index e4f1024..ab40983 100644
+index e4f1024..19359c5 100644
 --- a/source/render/r_draw.c
 +++ b/source/render/r_draw.c
 @@ -19,6 +19,8 @@
@@ -311,7 +311,7 @@ index e4f1024..ab40983 100644
      char_texture = Image_LoadImage("gfx/charset", IMAGE_TGA, HYE_FILTER_NEAREST, true, false);
      if (char_texture < 0)
          Sys_Error("Could not load gfx/charset; verify the game data is installed correctly\n");
-+    zh_texture = Image_LoadImage("gfx/charset_zh", IMAGE_TGA, HYE_FILTER_LINEAR, true, false);
++    zh_texture = Image_LoadImage("gfx/charset_zh", IMAGE_TGA, HYE_FILTER_NEAREST, true, false);
 +    if (zh_texture < 0) Sys_Error("Missing Chinese font atlas gfx/charset_zh.tga\n");
      Clear_LoadingFill();
      Draw_InitKerningMap();
@@ -335,13 +335,13 @@ index e4f1024..ab40983 100644
 +        if (cp > 255) {
 +            int glyph = ZH_GlyphIndex(cp);
 +            if (glyph >= 0 && zh_texture >= 0) {
-+                float u = (glyph % ZH_ATLAS_COLUMNS) * 16.0f / ZH_ATLAS_WIDTH;
-+                float v = (glyph / ZH_ATLAS_COLUMNS) * 16.0f / ZH_ATLAS_HEIGHT;
++                float u = (glyph % ZH_ATLAS_COLUMNS) * (float)ZH_GLYPH_CELL / ZH_ATLAS_WIDTH;
++                float v = (glyph / ZH_ATLAS_COLUMNS) * (float)ZH_GLYPH_CELL / ZH_ATLAS_HEIGHT;
 +                Draw_QueueQuad(zh_texture, HYE_2D_TEXTURED | HYE_2D_BLEND,
-+                    x, y-1*scale_int, x+10*scale_int, y+9*scale_int,
-+                    u, v, u+16.0f/ZH_ATLAS_WIDTH, v+16.0f/ZH_ATLAS_HEIGHT, r,g,b,a);
++                    x, y-1*scale_int, x+ZH_GLYPH_CELL*scale_int, y+(ZH_GLYPH_CELL-1)*scale_int,
++                    u, v, u+(float)ZH_GLYPH_CELL/ZH_ATLAS_WIDTH, v+(float)ZH_GLYPH_CELL/ZH_ATLAS_HEIGHT, r,g,b,a);
 +            } else Draw_CharacterRGBA(x,y,'?',r,g,b,a,scale_int);
-+            x += 10 * scale_int;
++            x += ZH_GLYPH_CELL * scale_int;
 +        } else {
 +            Draw_CharacterRGBA(x,y,cp,r,g,b,a,scale_int);
 +            if (cp == ' ') x += 4*scale_int;
@@ -366,7 +366,7 @@ index e4f1024..ab40983 100644
 +    const char *cursor = ZH_Translate(str);
 +    while (*cursor) {
 +        unsigned int cp = ZH_Decode(&cursor);
-+        if (cp > 255) width += 10*scale_int;
++        if (cp > 255) width += ZH_GLYPH_CELL*scale_int;
 +        else if (cp == ' ') width += 4*scale_int;
 +        else if (cp < 33 || cp > 126) width += 8*scale_int;
 +        else width += (font_kerningamount[cp-33]+1)*scale_int;
