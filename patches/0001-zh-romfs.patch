@@ -1,5 +1,5 @@
 diff --git a/Makefile.nx b/Makefile.nx
-index 89e420d..529ab2b 100644
+index 89e420d..45e083e 100644
 --- a/Makefile.nx
 +++ b/Makefile.nx
 @@ -9,9 +9,9 @@ endif
@@ -11,7 +11,7 @@ index 89e420d..529ab2b 100644
 -APP_VERSION	:=	2.0.0-indev
 +APP_TITLE	:=	使命召唤：纳粹僵尸
 +APP_AUTHOR	:=	Xiao Fan
-+APP_VERSION	:=	0.1.7-zh
++APP_VERSION	:=	0.2.0
  ICON        :=  source/platform/nx/art/icon.jpg
  
  TARGET		:=	nzportable
@@ -110,6 +110,50 @@ index e39190e..abe0360 100644
  #pragma GCC diagnostic pop
  	COM_DefaultExtension (name, ".sav");
  
+diff --git a/source/input.c b/source/input.c
+index 987fd6a..a76d374 100644
+--- a/source/input.c
++++ b/source/input.c
+@@ -17,10 +17,28 @@ extern cvar_t in_anub_mode;
+ static in_device_t in_active_device = IN_DEVICE_KEYBOARD_MOUSE;
+ 
+ #ifdef PLATFORM_SUPPORTS_GYRO
++#ifdef __SWITCH__
++cvar_t in_gyro_mode = {"in_gyro_mode", "1", true};
++#else
+ cvar_t in_gyro_mode = {"in_gyro_mode", "0", true};
++#endif
+ cvar_t in_gyro_sensitivity_x = {"in_gyro_sensitivity_x", "1.0", true};
+ cvar_t in_gyro_sensitivity_y = {"in_gyro_sensitivity_y", "1.0", true};
+ cvar_t in_gyro_zoom_scaling = {"in_gyro_zoom_scaling", "1", true};
++#ifdef __SWITCH__
++static cvar_t nx_gyro_defaults_version = {"nx_gyro_defaults_version", "0", true};
++extern void Host_WriteConfiguration(void);
++extern void NX_BootTrace(const char *stage, unsigned int detail);
++static void IN_NXApplyGyroDefaults(void)
++{
++    if (nx_gyro_defaults_version.value >= 1) return;
++    if ((int)in_gyro_mode.value == 0)
++        Cvar_SetValue("in_gyro_mode", 1);
++    Cvar_SetValue("nx_gyro_defaults_version", 1);
++    NX_BootTrace("gyro defaults applied", (unsigned int)in_gyro_mode.value);
++    Host_WriteConfiguration();
++}
++#endif
+ #endif
+ #ifdef PLATFORM_SUPPORTS_RUMBLE
+ cvar_t in_rumble = {"in_rumble", "1", true};
+@@ -64,6 +82,10 @@ void IN_Init(void)
+ 	Cvar_RegisterVariable(&in_gyro_sensitivity_x);
+ 	Cvar_RegisterVariable(&in_gyro_sensitivity_y);
+ 	Cvar_RegisterVariable(&in_gyro_zoom_scaling);
++#ifdef __SWITCH__
++	Cvar_RegisterVariable(&nx_gyro_defaults_version);
++	Cmd_AddCommand("nx_gyro_defaults", IN_NXApplyGyroDefaults);
++#endif
+ #endif
+ #ifdef PLATFORM_SUPPORTS_RUMBLE
+ 	Cvar_RegisterVariable(&in_rumble);
 diff --git a/source/menu/menu_helper.c b/source/menu/menu_helper.c
 index 89390ca..e14acfb 100644
 --- a/source/menu/menu_helper.c
@@ -359,7 +403,7 @@ index 1523df3..c8b33b8 100644
  		Sys_Error("Failed to initialize OpenGL context\n");
  		return;
 diff --git a/source/platform/nx/sys_nx.c b/source/platform/nx/sys_nx.c
-index d70ac38..fba107c 100644
+index d70ac38..e33ce4b 100644
 --- a/source/platform/nx/sys_nx.c
 +++ b/source/platform/nx/sys_nx.c
 @@ -27,12 +27,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
@@ -388,7 +432,7 @@ index d70ac38..fba107c 100644
      padInitializeDefault(&pad);
      padUpdate(&pad);
  
-@@ -327,38 +331,83 @@ void Sys_CaptureScreenshot(void)
+@@ -327,38 +331,84 @@ void Sys_CaptureScreenshot(void)
  
  //=============================================================================
  
@@ -407,7 +451,7 @@ index d70ac38..fba107c 100644
 +void userAppInit(void)
 +{
 +    FILE *log = fopen(NX_BootLogPath(), "w");
-+    if (log) { fprintf(log, "NZP 0.1.7 %s boot\n", envIsNso() ? "NSO" : "NRO"); fclose(log); }
++    if (log) { fprintf(log, "NZP 0.2.0 %s boot\n", envIsNso() ? "NSO" : "NRO"); fclose(log); }
 +    NX_BootTrace("libnx initialized and SD mounted", 0);
 +}
 +
@@ -455,6 +499,7 @@ index d70ac38..fba107c 100644
  
 +	NX_BootTrace("Host_Init entered", 0);
  	Host_Init (&parms);
++	Cbuf_AddText("nx_gyro_defaults\n");
 +	NX_BootTrace("Host_Init completed", 0);
  
  	oldtime = Sys_FloatTime();

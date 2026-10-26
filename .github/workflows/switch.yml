@@ -29,7 +29,7 @@ jobs:
           path: dist/
           if-no-files-found: error
 
-  release-preview:
+  release:
     needs: build
     runs-on: ubuntu-24.04
     permissions:
@@ -41,15 +41,18 @@ jobs:
           path: dist
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v0.1.7-zh-preview
-          name: 使命召唤：纳粹僵尸 0.1.7 NRO diagnostics
-          prerelease: true
+          tag_name: v0.2.0
+          name: 使命召唤：纳粹僵尸 0.2.0
+          prerelease: false
           body: |
-            Chinese Switch build with embedded game resources. This is an NRO preview, not the final NSP.
-            Cross-compilation and embedded RomFS checks passed; Switch hardware gameplay has not been verified.
-            Run in full-memory homebrew mode. No separate game resource folder is required.
-            中文首批适配；未完成全部动态提示、角色介绍及贴图文字汉化。实机运行、声音、帧率待测试。
-            Source and licenses are available in this repository and the pinned upstream commits in README.md.
+            使命召唤：纳粹僵尸 0.2.0；作者 Xiao Fan。
+            1280×720，高清中文字体，19 张内置地图名称与介绍已汉化。
+            使用已由用户实机验证进入主菜单并正常开局的原生启动配置。
+            新增 Switch 默认开启体感：首次升级启用一次，之后保留手动关闭设置。
+            本次体感默认设置尚需实机反馈；角色介绍与部分贴图文字仍未全部汉化。
+            NRO 内嵌游戏资源；使用前端时放置到 sdmc:/switch/cod-zombies/cod-zombies.nro。
+            原生 NSP 由同一构建在本地使用私有密钥打包；仓库不保存密钥。
+            Source, upstream pins and licenses are in this repository.
           files: |
             dist/NZP-ZH-Standalone.nro
             dist/SHA256SUMS.txt
